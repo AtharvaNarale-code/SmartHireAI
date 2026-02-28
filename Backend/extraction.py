@@ -97,8 +97,33 @@ def extract_skill_from_resume(resume_json: Dict, skill_dict: Dict) -> Dict:
         "other_tools": [],
     }
      skill_conf_map = {}  
+# store best confidence per skill
 
+    for category, skills in skill_dict.items():
+        for skill_key, skill_data in skills.items():
+
+            canonical = skill_data["canonical"]
+            best_conf = None
+
+            for alias in skill_data["aliases"]:
+                pattern = r"\b" + re.escape(alias) + r"\b"
+
+                for section_name, section_text in sections.items():
+                    for line in re.split(r"[.\n•]", section_text):  # 🔥 removed hyphen split
+                        if re.search(pattern, line, re.IGNORECASE):
+                            conf = detect_confidence(line.strip(), section_name)
+
+                            # 🔥 Experience section gets slight upgrade
+                            if section_name == "experience" and conf == "medium":
+                                conf = "strong"
+
+                            if not best_conf or CONFIDENCE_RANK[conf] > CONFIDENCE_RANK[best_conf]:
+                                best_conf = conf
+
+            if best_conf:
+                skill_conf_map[canonical] = best_conf
 
                 
+
 
 
