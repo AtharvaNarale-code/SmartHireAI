@@ -1,35 +1,78 @@
-#SmartHire AI
-An Explainable & Intelligent Recruitment Screening System
-SmartHire AI addresses the “Black Box” problem in recruitment by introducing a transparent, explainable, and data-driven candidate evaluation framework.
-Traditional ATS systems rely heavily on keyword matching, often ignoring context, experience depth, and real skill confidence.
-SmartHire AI replaces this with a weighted skill intelligence pipeline that benefits both HR teams and candidates.
+# SmartHire AI
+## An Explainable and Intelligent Recruitment Screening System
 
-#Problem Statement
-#Modern recruitment systems:
-Use keyword-based filtering
-Fail to explain rejection reasons
-Encourage resume keyword stuffing
-Do not provide candidate feedback
-This leads to unfair filtering, poor hiring decisions, and lack of transparency.
+SmartHire AI addresses the **“Black Box” problem in recruitment** by providing a **transparent, data-driven, and explainable candidate evaluation system**.
 
-#Solution Overview
-SmartHire AI introduces an explainable recruitment intelligence system that:
-Evaluates contextual skill usage
-Scores experience and project depth
-Generates AI-based recruiter summaries
-Provides candidates with structured learning roadmaps
+Traditional Applicant Tracking Systems (ATS) rely heavily on keyword matching, which often ignores real skill confidence, experience depth, and project impact.  
+SmartHire AI replaces this approach with **context-aware skill intelligence** designed for both **HR teams** and **candidates**.
 
-#Key Features For HR Teams
-Data-driven candidate leaderboard
-Skill confidence analysis
-AI-generated recruiter summaries
-Batch resume screening
+---
 
-#For Candidates 
-Transparent skill scoring
-Identified technical gaps
-AI-generated structured learning roadmap
-Domain-based fitment evaluation
+## Problem Statement
+
+Modern recruitment systems suffer from:
+- Keyword-based filtering
+- Lack of transparency in candidate rejection
+- Resume keyword stuffing
+- No feedback or growth roadmap for candidates
+
+This results in unfair screening and inefficient hiring decisions.
+
+---
+
+## Solution Overview
+
+SmartHire AI provides:
+- Contextual skill evaluation
+- Experience and project-weighted scoring
+- AI-generated recruiter summaries
+- Candidate-facing learning roadmaps
+
+This ensures realistic ranking and explainable hiring decisions.
+
+---
+
+## Key Features
+
+### For HR Teams
+- Data-driven candidate leaderboard
+- Skill confidence analysis
+- AI-generated recruiter summaries
+- Batch resume screening
+
+### For Candidates
+- Transparent skill scoring
+- Identified technical gaps
+- AI-generated structured learning roadmap
+- Domain-based fitment evaluation
+
+---
+
+## System Architecture
+
+The system follows a modular processing pipeline:
+
+**Extraction → Scoring → Intelligence → Visualization**
+
+| Layer | Technology | Purpose |
+|------|-----------|---------|
+| Backend | Python / Flask 3.0 | API handling and routing |
+| Extraction | pdfplumber + Regex | PDF to structured JSON |
+| Logic Engine | Weighted Scoring System | Skill confidence evaluation |
+| AI Engine | Gemini 1.5 Flash | Recruiter summaries and learning roadmaps |
+| Frontend | Tailwind CSS + Mermaid.js | Dashboard UI and flowcharts |
+
+---
+
+## Core Algorithm: Weighted Skill Strength Engine
+
+Skills are detected contextually and categorized into three levels:
+
+- Strong (1.6x multiplier)
+- Medium (1.0x multiplier)
+- Weak (0.3x multiplier)
+
+### Final Score Formula
 
 ## 📷 Dashboard View
 
