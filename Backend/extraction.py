@@ -7,13 +7,13 @@ from Backend import Skilldomain
 
 def pdf_extract(uploaded_file) -> str | None:
     extracted_text = ""
-  try:
+    try:
         with pdfplumber.open(uploaded_file) as pdf:
             for page in pdf.pages:
                 page_text = page.extract_text()
                 if page_text:
                     extracted_text += page_text + "\n"
-                  cleaned_text = "\n".join(
+                    cleaned_text = "\n".join(
             line.strip()
             for line in extracted_text.split("\n")
             if line.strip()
