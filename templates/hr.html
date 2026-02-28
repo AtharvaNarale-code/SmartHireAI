@@ -1,82 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>HR Dashboard · SmartHire AI</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap"
-    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --amber: #F5A623;
-      --amber-lo: rgba(245, 166, 35, 0.1);
-      --ink: #050505;
-      --s1: rgba(10, 10, 10, 0.75);
-      --s2: rgba(18, 18, 18, 0.6);
-      --s3: rgba(24, 24, 24, 0.8);
-      --border: #222222;
-      --border2: #333333;
-      --text: #E0DBD1;
-      --muted: #666666;
-      --muted2: #888888;
-      --green: #4ADE80;
-      --yellow: #FACC15;
-      --red: #F87171;
+      --amber:   #F5A623;
+      --amber-lo: rgba(245,166,35,0.08);
+      --ink:     #080808;
+      --s1:      #0D0D0D;
+      --s2:      #121212;
+      --s3:      #181818;
+      --border:  #1F1F1F;
+      --border2: #2A2A2A;
+      --text:    #E0DBD1;
+      --muted:   #4A4A4A;
+      --muted2:  #666;
+      --green:   #4ADE80;
+      --yellow:  #FACC15;
+      --red:     #F87171;
+      --blue:    #60A5FA;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       background: var(--ink);
       color: var(--text);
       font-family: 'IBM Plex Mono', monospace;
       min-height: 100vh;
-      overflow-x: hidden;
     }
 
-    /* Ambient Backgrounds from Homepage */
+    /* Scanlines */
     body::after {
       content: '';
       position: fixed;
       inset: 0;
-      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, 0.15) 2px, rgba(0, 0, 0, 0.15) 4px);
+      background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.1) 3px, rgba(0,0,0,0.1) 4px);
       pointer-events: none;
       z-index: 100;
-    }
-
-    .bg-glow {
-      position: fixed;
-      inset: 0;
-      z-index: -1;
-      background: radial-gradient(circle at 70% 30%, rgba(245, 166, 35, 0.06) 0%, transparent 60%);
-      animation: breathe 8s ease-in-out infinite alternate;
-    }
-
-    .bg-grid {
-      position: fixed;
-      inset: 0;
-      z-index: -2;
-      background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-      background-size: 48px 48px;
     }
 
     /* ---- Layout ---- */
     .sidebar {
       position: fixed;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      width: 240px;
+      left: 0; top: 0; bottom: 0;
+      width: 220px;
       background: var(--s1);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
       border-right: 1px solid var(--border);
       display: flex;
       flex-direction: column;
@@ -84,61 +57,50 @@
     }
 
     .main-area {
-      margin-left: 240px;
+      margin-left: 220px;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      position: relative;
     }
 
     .topbar {
-      height: 60px;
+      height: 52px;
       border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 32px;
+      padding: 0 28px;
       background: var(--s1);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      position: sticky;
-      top: 0;
-      z-index: 40;
+      position: sticky; top: 0; z-index: 40;
     }
 
-    .content {
-      padding: 40px 32px;
-      max-width: 1200px;
-      margin: 0 auto;
-      width: 100%;
-    }
+    .content { padding: 32px 28px; }
 
-    /* ---- Sidebar Elements ---- */
+    /* ---- Sidebar ---- */
     .logo-block {
-      padding: 28px 24px 24px;
+      padding: 24px 20px 20px;
       border-bottom: 1px solid var(--border);
     }
 
     .logo-text {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: 32px;
+      font-size: 26px;
       letter-spacing: 0.06em;
       line-height: 1;
-      text-shadow: 0 0 20px rgba(245, 166, 35, 0.2);
     }
 
     .logo-sub {
-      font-size: 10px;
-      letter-spacing: 0.25em;
+      font-size: 9px;
+      letter-spacing: 0.2em;
       color: var(--muted2);
       text-transform: uppercase;
-      margin-top: 6px;
+      margin-top: 4px;
     }
 
     .nav-section {
-      padding: 24px 20px 10px;
-      font-size: 10px;
-      letter-spacing: 0.25em;
+      padding: 20px 14px 8px;
+      font-size: 9px;
+      letter-spacing: 0.2em;
       color: var(--muted);
       text-transform: uppercase;
     }
@@ -146,55 +108,53 @@
     .nav-item {
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 12px 20px;
+      gap: 10px;
+      padding: 9px 14px;
       font-size: 11px;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.05em;
       color: var(--muted2);
       cursor: pointer;
       border-left: 2px solid transparent;
-      transition: all 0.2s ease;
+      transition: all 0.15s;
       text-transform: uppercase;
     }
 
-    .nav-item:hover {
-      color: var(--text);
-      background: rgba(255, 255, 255, 0.03);
-    }
+    .nav-item:hover { color: var(--text); background: var(--s2); }
 
     .nav-item.active {
       color: var(--amber);
       border-left-color: var(--amber);
       background: var(--amber-lo);
-      text-shadow: 0 0 10px rgba(245, 166, 35, 0.3);
     }
 
     .sidebar-footer {
       margin-top: auto;
-      padding: 20px;
+      padding: 16px 14px;
       border-top: 1px solid var(--border);
     }
 
-    .status-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--green);
-      animation: pulse 2s infinite;
-      display: inline-block;
-      box-shadow: 0 0 8px var(--green);
+    /* ---- Cards ---- */
+    .card {
+      background: var(--s2);
+      border: 1px solid var(--border);
+      padding: 24px;
     }
 
-    /* ---- UI Components ---- */
+    .card-sm {
+      background: var(--s2);
+      border: 1px solid var(--border);
+      padding: 18px 20px;
+    }
+
     .section-label {
-      font-size: 10px;
+      font-size: 9px;
       letter-spacing: 0.25em;
-      color: var(--muted2);
+      color: var(--muted);
       text-transform: uppercase;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 8px;
     }
 
     .section-label::after {
@@ -204,24 +164,19 @@
       background: var(--border);
     }
 
-    /* Upload Zone */
+    /* ---- Upload zone ---- */
     .upload-zone {
       border: 1px dashed var(--border2);
-      background: var(--s2);
-      border-radius: 6px;
-      padding: 48px 24px;
+      padding: 40px 24px;
       text-align: center;
       cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.2s;
       position: relative;
-      overflow: hidden;
     }
 
-    .upload-zone:hover,
-    .upload-zone.drag-over {
+    .upload-zone:hover, .upload-zone.drag-over {
       border-color: var(--amber);
-      background: rgba(245, 166, 35, 0.05);
-      box-shadow: 0 0 30px rgba(245, 166, 35, 0.05) inset;
+      background: var(--amber-lo);
     }
 
     .upload-zone input[type=file] {
@@ -231,534 +186,759 @@
       cursor: pointer;
       width: 100%;
       height: 100%;
-      z-index: 2;
     }
 
     .upload-icon {
-      font-size: 32px;
-      margin-bottom: 16px;
-      display: inline-block;
-      transition: transform 0.3s ease;
+      font-size: 28px;
+      margin-bottom: 12px;
+      display: block;
     }
 
-    .upload-zone:hover .upload-icon {
-      transform: translateY(-4px);
-      color: var(--amber);
+    /* ---- File chip ---- */
+    .file-chip {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--s3);
+      border: 1px solid var(--border2);
+      padding: 8px 12px;
+      font-size: 11px;
+      color: var(--muted2);
     }
 
-    /* Inputs & Buttons */
+    .file-chip .remove {
+      margin-left: auto;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 14px;
+      line-height: 1;
+      transition: color 0.15s;
+    }
+    .file-chip .remove:hover { color: var(--red); }
+
+    /* ---- Input ---- */
     .input-field {
       background: var(--s3);
       border: 1px solid var(--border2);
-      border-radius: 4px;
       color: var(--text);
       font-family: 'IBM Plex Mono', monospace;
-      font-size: 13px;
-      padding: 12px 16px;
+      font-size: 12px;
+      padding: 10px 14px;
       width: 100%;
       outline: none;
-      transition: all 0.2s ease;
+      transition: border-color 0.2s;
     }
 
-    .input-field:focus {
-      border-color: var(--amber);
-      box-shadow: 0 0 0 3px rgba(245, 166, 35, 0.15);
-    }
+    .input-field:focus { border-color: var(--amber); }
 
+    .input-field::placeholder { color: var(--muted); }
+
+    /* ---- Button ---- */
     .btn-primary {
       background: var(--amber);
       color: #000;
       font-family: 'IBM Plex Mono', monospace;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 600;
       letter-spacing: 0.15em;
       text-transform: uppercase;
-      padding: 14px 32px;
+      padding: 12px 28px;
       border: none;
-      border-radius: 4px;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all 0.2s;
       display: inline-flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
     }
 
-    .btn-primary:hover:not(:disabled) {
-      background: #FFBE45;
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(245, 166, 35, 0.3);
-    }
-
-    .btn-primary:disabled {
-      opacity: 0.3;
-      cursor: not-allowed;
-      filter: grayscale(1);
-    }
+    .btn-primary:hover { background: #FFBE45; transform: translateY(-1px); }
+    .btn-primary:active { transform: translateY(0); }
+    .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
 
     .btn-ghost {
       background: transparent;
       color: var(--muted2);
       font-family: 'IBM Plex Mono', monospace;
-      font-size: 11px;
+      font-size: 10px;
       letter-spacing: 0.12em;
       text-transform: uppercase;
       padding: 8px 16px;
       border: 1px solid var(--border2);
-      border-radius: 4px;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.15s;
+    }
+    .btn-ghost:hover { border-color: var(--amber); color: var(--amber); }
+
+    /* ---- Loader ---- */
+    .loader-bar {
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--amber), transparent);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
     }
 
-    .btn-ghost:hover {
-      border-color: var(--amber);
-      color: var(--amber);
-      background: rgba(245, 166, 35, 0.05);
+    @keyframes shimmer {
+      0%   { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
     }
 
-    /* Leaderboard */
-    .card {
-      background: var(--s2);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      backdrop-filter: blur(10px);
-    }
-
+    /* ---- Leaderboard ---- */
     .lb-header {
       display: grid;
-      grid-template-columns: 50px 1.5fr 100px 140px 100px 1fr;
-      gap: 16px;
-      padding: 12px 20px;
-      font-size: 10px;
-      letter-spacing: 0.2em;
+      grid-template-columns: 40px 1fr 100px 120px 100px 1fr;
+      gap: 12px;
+      padding: 8px 16px;
+      font-size: 9px;
+      letter-spacing: 0.18em;
       color: var(--muted);
       text-transform: uppercase;
       border-bottom: 1px solid var(--border);
-      background: rgba(0, 0, 0, 0.2);
     }
 
     .lb-row {
       display: grid;
-      grid-template-columns: 50px 1.5fr 100px 140px 100px 1fr;
-      gap: 16px;
-      padding: 16px 20px;
+      grid-template-columns: 40px 1fr 100px 120px 100px 1fr;
+      gap: 12px;
+      padding: 14px 16px;
       border-bottom: 1px solid var(--border);
       align-items: center;
-      transition: all 0.2s ease;
+      transition: background 0.15s;
       cursor: pointer;
-      background: transparent;
     }
 
-    .lb-row:hover {
-      background: rgba(255, 255, 255, 0.03);
-      transform: translateX(4px);
-    }
+    .lb-row:hover { background: var(--s3); }
 
-    .lb-row.rank-1 {
-      border-left: 3px solid #F5A623;
-    }
-
-    .lb-row.rank-2 {
-      border-left: 3px solid #E5E7EB;
-    }
-
-    .lb-row.rank-3 {
-      border-left: 3px solid #CD7F32;
-    }
+    .lb-row.rank-1 { border-left: 2px solid #F5A623; }
+    .lb-row.rank-2 { border-left: 2px solid #9CA3AF; }
+    .lb-row.rank-3 { border-left: 2px solid #CD7F32; }
 
     .rank-badge {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: 24px;
+      font-size: 20px;
       line-height: 1;
     }
 
-    .rank-1 .rank-badge {
-      color: var(--amber);
-      text-shadow: 0 0 15px rgba(245, 166, 35, 0.4);
+    .rank-1 .rank-badge { color: var(--amber); }
+    .rank-2 .rank-badge { color: #9CA3AF; }
+    .rank-3 .rank-badge { color: #CD7F32; }
+    .rank-other .rank-badge { color: var(--muted); font-size: 15px; }
+
+    /* Score bar */
+    .score-bar-wrap {
+      height: 3px;
+      background: var(--border2);
+      overflow: hidden;
+      margin-top: 4px;
     }
 
-    .rank-2 .rank-badge {
-      color: #E5E7EB;
+    .score-bar-fill {
+      height: 100%;
+      background: var(--amber);
+      transition: width 1s ease;
     }
 
-    .rank-3 .rank-badge {
-      color: #CD7F32;
+    /* Confidence badge */
+    .conf-badge {
+      display: inline-block;
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      padding: 2px 7px;
+      text-transform: uppercase;
     }
 
-    .rank-other .rank-badge {
-      color: var(--muted);
-      font-size: 18px;
-    }
+    .conf-strong { background: rgba(74,222,128,0.12); color: var(--green); }
+    .conf-medium { background: rgba(250,204,21,0.12); color: var(--yellow); }
+    .conf-weak   { background: rgba(248,113,113,0.12); color: var(--red); }
 
-    /* Detail Panel */
-    .panel-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.4);
-      backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
-      z-index: 190;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
-    }
-
-    .panel-overlay.open {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
+    /* ---- Detail panel (slide-in) ---- */
     .detail-panel {
       position: fixed;
-      right: 0;
-      top: 0;
-      bottom: 0;
-      width: 500px;
-      background: rgba(10, 10, 10, 0.95);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      right: 0; top: 0; bottom: 0;
+      width: 460px;
+      background: var(--s1);
       border-left: 1px solid var(--border);
       z-index: 200;
       display: flex;
       flex-direction: column;
       transform: translateX(100%);
-      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: -20px 0 50px rgba(0, 0, 0, 0.5);
+      transition: transform 0.3s cubic-bezier(0.16,1,0.3,1);
+      overflow-y: auto;
     }
 
-    .detail-panel.open {
-      transform: translateX(0);
+    .detail-panel.open { transform: translateX(0); }
+
+    .panel-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 190;
+      display: none;
     }
+
+    .panel-overlay.open { display: block; }
 
     .panel-header {
-      padding: 24px 32px;
+      padding: 20px 24px;
       border-bottom: 1px solid var(--border);
       display: flex;
-      align-items: flex-start;
+      align-items: center;
       justify-content: space-between;
-      background: rgba(0, 0, 0, 0.2);
+      position: sticky;
+      top: 0;
+      background: var(--s1);
+      z-index: 5;
     }
 
+    .close-btn {
+      font-size: 20px;
+      color: var(--muted);
+      cursor: pointer;
+      line-height: 1;
+      transition: color 0.15s;
+    }
+    .close-btn:hover { color: var(--text); }
+
+    .skill-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--s3);
+      border: 1px solid var(--border2);
+      font-size: 10px;
+      padding: 4px 10px;
+      color: var(--muted2);
+      letter-spacing: 0.05em;
+    }
+
+    /* ---- Summary stats ---- */
     .stat-card {
       background: var(--s2);
       border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 20px;
+      padding: 16px 18px;
       flex: 1;
     }
 
     .stat-value {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: 42px;
+      font-size: 36px;
       line-height: 1;
-      color: var(--text);
+      color: var(--amber);
     }
 
-    .conf-badge {
-      display: inline-block;
+    .stat-label {
       font-size: 9px;
-      letter-spacing: 0.15em;
-      padding: 3px 8px;
-      border-radius: 3px;
+      letter-spacing: 0.18em;
+      color: var(--muted);
       text-transform: uppercase;
-      font-weight: 500;
+      margin-top: 4px;
     }
 
-    .conf-strong {
-      background: rgba(74, 222, 128, 0.1);
-      border: 1px solid rgba(74, 222, 128, 0.2);
-      color: var(--green);
-    }
-
-    .conf-medium {
-      background: rgba(250, 204, 21, 0.1);
-      border: 1px solid rgba(250, 204, 21, 0.2);
-      color: var(--yellow);
-    }
-
-    .conf-weak {
-      background: rgba(248, 113, 113, 0.1);
-      border: 1px solid rgba(248, 113, 113, 0.2);
-      color: var(--red);
-    }
-
-    .skill-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--s3);
-      border: 1px solid var(--border2);
-      border-radius: 4px;
-      font-size: 11px;
-      padding: 6px 12px;
-      color: var(--text);
-    }
-
+    /* ---- Recruiter note ---- */
     .recruiter-note {
-      background: linear-gradient(90deg, rgba(245, 166, 35, 0.05), transparent);
+      background: var(--s3);
       border-left: 2px solid var(--amber);
-      padding: 20px;
+      padding: 16px 18px;
       font-family: 'IBM Plex Sans', sans-serif;
-      font-size: 14px;
+      font-size: 13px;
       line-height: 1.7;
-      color: #D0C8B8;
+      color: #BBB5A8;
       font-style: italic;
-      border-radius: 0 4px 4px 0;
     }
+
+    /* ---- Toast ---- */
+    .toast {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      background: var(--s2);
+      border: 1px solid var(--border2);
+      padding: 14px 20px;
+      font-size: 11px;
+      letter-spacing: 0.05em;
+      z-index: 500;
+      display: none;
+      align-items: center;
+      gap: 10px;
+      max-width: 360px;
+    }
+
+    .toast.show { display: flex; }
+    .toast.error { border-left: 2px solid var(--red); }
+    .toast.success { border-left: 2px solid var(--green); }
 
     /* Animations */
-    @keyframes breathe {
-      0% {
-        opacity: 0.5;
-        transform: scale(1);
-      }
-
-      100% {
-        opacity: 1;
-        transform: scale(1.05);
-      }
-    }
-
-    @keyframes pulse {
-
-      0%,
-      100% {
-        opacity: 1;
-        transform: scale(1);
-      }
-
-      50% {
-        opacity: 0.4;
-        transform: scale(0.8);
-      }
-    }
-
     @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(15px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
-    .animate-in {
-      animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-      opacity: 0;
-    }
+    .animate-in { animation: fadeIn 0.35s ease forwards; }
 
     /* Scrollbar */
-    ::-webkit-scrollbar {
-      width: 6px;
-    }
-
-    ::-webkit-scrollbar-track {
-      background: var(--ink);
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: var(--border2);
-      border-radius: 3px;
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-      background: var(--muted);
-    }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border2); }
   </style>
 </head>
-
 <body>
 
-  <div class="bg-grid"></div>
-  <div class="bg-glow"></div>
+<!-- ================================================================ SIDEBAR -->
+<aside class="sidebar">
+  <div class="logo-block">
+    <div class="logo-text">SMART<span style="color:var(--amber)">HIRE</span></div>
+    <div class="logo-sub">HR Intelligence · v1.0</div>
+  </div>
 
-  <aside class="sidebar">
-    <div class="logo-block">
-      <div class="logo-text">SMART<span style="color:var(--amber)">HIRE</span></div>
-      <div class="logo-sub">HR Intelligence · v1.0</div>
+  <div style="flex:1;overflow-y:auto;padding-top:8px;">
+    <div class="nav-section">HR Workflow</div>
+    <div class="nav-item active" onclick="showView('upload')">
+      <span>⬆</span> Upload Resumes
+    </div>
+    <div class="nav-item" id="nav-results" onclick="showView('results')" style="display:none;">
+      <span>▦</span> Leaderboard
     </div>
 
-    <div style="flex:1;overflow-y:auto;padding-top:16px;">
-      <div class="nav-section">HR Workflow</div>
-      <div class="nav-item active" onclick="showView('upload')">
-        <span style="font-size:14px;">⬆</span> Upload Resumes
-      </div>
-      <div class="nav-item" id="nav-results" onclick="showView('results')" style="display:none;">
-        <span style="font-size:14px;">▦</span> Leaderboard
-      </div>
+    <div class="nav-section" style="margin-top:16px;">Portal</div>
+    <a href="/" style="text-decoration:none;">
+      <div class="nav-item"><span>←</span> Home</div>
+    </a>
+  </div>
 
-      <div class="nav-section" style="margin-top:24px;">System</div>
-      <a href="/" style="text-decoration:none;">
-        <div class="nav-item"><span style="font-size:14px;">←</span> Return Home</div>
-      </a>
+  <div class="sidebar-footer">
+    <div style="font-size:9px;letter-spacing:0.12em;color:var(--muted);text-transform:uppercase;line-height:1.8;">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+        <span style="width:5px;height:5px;border-radius:50%;background:var(--amber);display:inline-block;"></span>
+        System Active
+      </div>
+      Backend · Flask 3.0<br>
+      
     </div>
+  </div>
+</aside>
 
-    <div class="sidebar-footer">
-      <div style="font-size:10px;letter-spacing:0.15em;color:var(--muted);text-transform:uppercase;line-height:1.8;">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px; color:var(--text);">
+<!-- ================================================================ MAIN -->
+<div class="main-area">
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <div style="font-size:11px;letter-spacing:0.1em;color:var(--muted2);text-transform:uppercase;" id="topbar-title">
+      HR Dashboard · Upload
+    </div>
+    <div style="display:flex;align-items:center;gap:20px;">
+      <span style="font-size:10px;letter-spacing:0.1em;color:var(--muted);text-transform:uppercase;" id="topbar-status">Ready</span>
+    </div>
+  </div>
+
+  <!-- Loader bar (hidden by default) -->
+  <div id="loader" style="display:none;">
+    <div class="loader-bar"></div>
+  </div>
+
+  <div class="content">
+
+    <!-- ============================================ UPLOAD VIEW -->
+    <div id="view-upload">
+
+      <div style="margin-bottom:32px;">
+        <p style="font-size:9px;letter-spacing:0.25em;color:var(--amber);text-transform:uppercase;margin-bottom:8px;">01 · Configure Analysis</p>
+        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:40px;letter-spacing:0.04em;line-height:1;color:var(--text);">BATCH RESUME<br>ANALYSIS</h2>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:900px;">
+
+        <!-- Left: upload + files -->
+        <div>
+          <div class="section-label">Upload PDFs</div>
+
+          <div class="upload-zone" id="dropzone">
+            <input type="file" id="fileInput" multiple accept=".pdf" onchange="handleFiles(this.files)" />
+            <span class="upload-icon">⬆</span>
+            <p style="font-size:12px;color:var(--muted2);margin-bottom:6px;">Drop PDFs here or click to browse</p>
+            <p style="font-size:10px;color:var(--muted);letter-spacing:0.08em;">Multiple files supported · Max 32MB total</p>
+          </div>
+
+          <div id="file-list" style="margin-top:14px;display:flex;flex-direction:column;gap:8px;"></div>
         </div>
-      </div>
-    </div>
-  </aside>
 
-  <div class="main-area">
-    <div class="topbar">
-      <div style="font-size:12px;letter-spacing:0.15em;color:var(--text);text-transform:uppercase; font-weight:500;"
-        id="topbar-title">
-        Dashboard <span style="color:var(--muted)">/</span> Upload
-      </div>
-      <div style="display:flex;align-items:center;gap:20px;">
-        <span
-          style="font-size:11px;letter-spacing:0.15em;color:var(--amber);text-transform:uppercase; background:var(--amber-lo); padding:4px 12px; border-radius:20px;"
-          id="topbar-status">Awaiting Input</span>
-      </div>
-    </div>
+        <!-- Right: domain + submit -->
+        <div style="display:flex;flex-direction:column;gap:20px;">
 
-    <div class="content">
-      <div id="view-upload" class="animate-in">
-        <div style="margin-bottom:48px;">
-          <p
-            style="font-size:11px;letter-spacing:0.3em;color:var(--amber);text-transform:uppercase;margin-bottom:12px;">
-            Step 01 // Configuration</p>
-          <h2
-            style="font-family:'Bebas Neue',sans-serif;font-size:56px;letter-spacing:0.04em;line-height:0.9;color:#FFF; text-shadow: 0 0 30px rgba(255,255,255,0.1);">
-            BATCH RESUME<br>ANALYSIS</h2>
-        </div>
-
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;max-width:1000px;">
           <div>
-            <div class="section-label">Target Documents</div>
-            <div class="upload-zone" id="dropzone">
-              <input type="file" id="fileInput" multiple accept=".pdf" onchange="handleFiles(this.files)" />
-              <span class="upload-icon">📄</span>
-              <p style="font-size:14px;color:var(--text);margin-bottom:8px; font-weight:500;">Drop PDFs here or click to
-                browse</p>
-              <p style="font-size:11px;color:var(--muted);letter-spacing:0.05em;">Multiple files supported · Max 32MB
-                total</p>
-            </div>
-            <div id="file-list" style="margin-top:20px;display:flex;flex-direction:column;gap:10px;"></div>
+            <div class="section-label">Job Domain</div>
+            <input class="input-field" type="text" id="domainInput"
+              placeholder="e.g. Machine Learning Engineer"
+              value="Software Engineering" />
+            <p style="font-size:10px;color:var(--muted);margin-top:8px;line-height:1.6;">
+              Used to contextualise recruiter notes and identify domain-specific skill gaps.
+            </p>
           </div>
 
-          <div style="display:flex;flex-direction:column;gap:32px;">
-            <div>
-              <div class="section-label">Analysis Context</div>
-              <input class="input-field" type="text" id="domainInput" placeholder="e.g. Machine Learning Engineer"
-                value="Software Engineering" />
-              <p style="font-size:11px;color:var(--muted);margin-top:10px;line-height:1.6;">
-                Defines the lens through which AI evaluates candidate skills and generates recruiter notes.
-              </p>
-            </div>
-
-            <div>
-              <div class="section-label">Quick Select Profiles</div>
-              <div style="display:flex;flex-wrap:wrap;gap:10px;">
-                <button class="btn-ghost" onclick="setDomain('Software Engineering')">SWE</button>
-                <button class="btn-ghost" onclick="setDomain('Machine Learning Engineer')">ML / AI</button>
-                <button class="btn-ghost" onclick="setDomain('Data Engineer')">Data Eng</button>
-                <button class="btn-ghost" onclick="setDomain('DevOps / Cloud Engineer')">DevOps</button>
-                <button class="btn-ghost" onclick="setDomain('Full Stack Developer')">Full Stack</button>
-              </div>
-            </div>
-
-            <div style="margin-top:auto;padding-top:24px;border-top:1px solid var(--border);">
-              <button class="btn-primary" id="analyzeBtn" onclick="runAnalysis()" enabled>
-                <span>▶</span> INITIALIZE ANALYSIS
-              </button>
+          <div>
+            <div class="section-label">Quick Select Domain</div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;">
+              <button class="btn-ghost" onclick="setDomain('Software Engineering')">SWE</button>
+              <button class="btn-ghost" onclick="setDomain('Machine Learning Engineer')">ML / AI</button>
+              <button class="btn-ghost" onclick="setDomain('Data Engineer')">Data Eng</button>
+              <button class="btn-ghost" onclick="setDomain('DevOps / Cloud Engineer')">DevOps</button>
+              <button class="btn-ghost" onclick="setDomain('Full Stack Developer')">Full Stack</button>
+              <button class="btn-ghost" onclick="setDomain('Backend Developer')">Backend</button>
             </div>
           </div>
-        </div>
-      </div>
 
-      <div id="view-results" style="display:none;">
-        <div style="margin-bottom:40px;">
-          <p style="font-size:11px;letter-spacing:0.3em;color:var(--amber);text-transform:uppercase;margin-bottom:12px;"
-            id="results-domain-tag">Step 02 // Results</p>
-          <div
-            style="display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;margin-bottom:32px;">
-            <h2
-              style="font-family:'Bebas Neue',sans-serif;font-size:56px;letter-spacing:0.04em;color:#FFF; text-shadow: 0 0 30px rgba(255,255,255,0.1);"
-              id="results-title">LEADERBOARD</h2>
-            <button class="btn-ghost" onclick="showView('upload')">← New Analysis</button>
+          <div style="margin-top:auto;padding-top:16px;border-top:1px solid var(--border);">
+            <button class="btn-primary" id="analyzeBtn" onclick="runAnalysis()" disabled>
+              <span>▶</span> RUN ANALYSIS
+            </button>
+            <p style="font-size:10px;color:var(--muted);margin-top:10px;line-height:1.6;">
+              Each resume is scored, ranked
+            </p>
           </div>
-          <div style="display:flex;gap:20px;" id="summary-stats"></div>
-        </div>
-        <div class="card" style="padding:0;overflow:hidden;margin-bottom:32px;">
-          <div class="lb-header">
-            <span>Rank</span><span>Candidate</span><span>Match</span><span>Skills</span><span>Confidence</span><span>Quick
-              Note</span>
-          </div>
-          <div id="lb-body"></div>
         </div>
       </div>
     </div>
+
+    <!-- ============================================ RESULTS VIEW -->
+    <div id="view-results" style="display:none;">
+
+      <!-- Summary row -->
+      <div style="margin-bottom:28px;">
+        <p style="font-size:9px;letter-spacing:0.25em;color:var(--amber);text-transform:uppercase;margin-bottom:8px;" id="results-domain-tag">02 · Results</p>
+        <div style="display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:20px;">
+          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:40px;letter-spacing:0.04em;color:var(--text);" id="results-title">LEADERBOARD</h2>
+          <button class="btn-ghost" onclick="showView('upload')" style="font-size:10px;">← New Analysis</button>
+        </div>
+
+        <div style="display:flex;gap:16px;" id="summary-stats">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Leaderboard table -->
+      <div class="card" style="padding:0;overflow:hidden;margin-bottom:24px;">
+        <div class="lb-header">
+          <span>Rank</span>
+          <span>Candidate</span>
+          <span>Score</span>
+          <span>Skills</span>
+          <span>Confidence</span>
+          <span>Quick Note</span>
+        </div>
+        <div id="lb-body">
+          <!-- Rows populated by JS -->
+        </div>
+      </div>
+
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main-area -->
+
+<!-- ================================================================ DETAIL PANEL -->
+<div class="panel-overlay" id="panel-overlay" onclick="closePanel()"></div>
+
+<div class="detail-panel" id="detail-panel">
+  <div class="panel-header">
+    <div>
+      <p style="font-size:9px;letter-spacing:0.2em;color:var(--amber);text-transform:uppercase;margin-bottom:4px;">Candidate Detail</p>
+      <h3 style="font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:0.04em;" id="panel-name">—</h3>
+    </div>
+    <span class="close-btn" onclick="closePanel()">✕</span>
   </div>
 
-  <div class="panel-overlay" id="panel-overlay" onclick="closePanel()"></div>
-  <div class="detail-panel" id="detail-panel">
-    <div class="panel-header">
-      <div>
-        <p style="font-size:10px;letter-spacing:0.25em;color:var(--amber);text-transform:uppercase;margin-bottom:8px;">
-          Candidate Profile</p>
-        <h3 style="font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:0.04em; color:#FFF;"
-          id="panel-name">—</h3>
-      </div>
-      <span style="font-size:24px;color:var(--muted);cursor:pointer;transition:color 0.2s;"
-        onclick="closePanel()">✕</span>
-    </div>
-    <div style="padding:32px;flex:1;overflow-y:auto;" id="panel-content">
-    </div>
+  <div style="padding:20px 24px;flex:1;" id="panel-content">
+    <!-- Populated by JS -->
   </div>
+</div>
 
-  <script>
-    let uploadedFiles = [];
-    let leaderboardData = [];
+<!-- ================================================================ TOAST -->
+<div class="toast" id="toast">
+  <span id="toast-icon">●</span>
+  <span id="toast-msg">—</span>
+</div>
 
-    const dz = document.getElementById('dropzone');
-    dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag-over'); });
-    dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
-    dz.addEventListener('drop', e => { e.preventDefault(); dz.classList.remove('drag-over'); handleFiles(e.dataTransfer.files); });
+<!-- ================================================================ JS -->
+<script>
+  let uploadedFiles = [];
+  let leaderboardData = [];
 
-    function handleFiles(files) {
-      Array.from(files).forEach(f => {
-        if (f.type === 'application/pdf' && !uploadedFiles.find(x => x.name === f.name)) uploadedFiles.push(f);
-      });
-      renderFileList();
-      document.getElementById('analyzeBtn').disabled = uploadedFiles.length === 0;
-    }
+  // ---- Drag & drop ----
+  const dz = document.getElementById('dropzone');
+  dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag-over'); });
+  dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
+  dz.addEventListener('drop', e => {
+    e.preventDefault();
+    dz.classList.remove('drag-over');
+    handleFiles(e.dataTransfer.files);
+  });
 
-    function renderFileList() {
-      const el = document.getElementById('file-list');
-      el.innerHTML = uploadedFiles.map((f, i) => `
-      <div style="display:flex;align-items:center;gap:12px;background:var(--s3);border:1px solid var(--border2);border-radius:4px;padding:10px 16px;font-size:12px;color:var(--text);" class="animate-in">
-        <span style="color:var(--amber)">📄</span>
+  function handleFiles(files) {
+    Array.from(files).forEach(f => {
+      if (f.type === 'application/pdf' && !uploadedFiles.find(x => x.name === f.name)) {
+        uploadedFiles.push(f);
+      }
+    });
+    renderFileList();
+    document.getElementById('analyzeBtn').disabled = uploadedFiles.length === 0;
+  }
+
+  function renderFileList() {
+    const el = document.getElementById('file-list');
+    el.innerHTML = uploadedFiles.map((f, i) => `
+      <div class="file-chip animate-in">
+        <span style="color:var(--amber)">PDF</span>
         <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${f.name}</span>
-        <span style="color:var(--muted);font-size:11px;">${(f.size / 1024).toFixed(0)}KB</span>
-        <span style="color:var(--muted);cursor:pointer;" onclick="removeFile(${i})">✕</span>
+        <span style="color:var(--muted);font-size:10px;">${(f.size/1024).toFixed(0)}KB</span>
+        <span class="remove" onclick="removeFile(${i})">✕</span>
       </div>
     `).join('');
+  }
+
+  function removeFile(idx) {
+    uploadedFiles.splice(idx, 1);
+    renderFileList();
+    document.getElementById('analyzeBtn').disabled = uploadedFiles.length === 0;
+  }
+
+  function setDomain(d) {
+    document.getElementById('domainInput').value = d;
+  }
+
+  // ---- Run Analysis ----
+  async function runAnalysis() {
+    const domain = document.getElementById('domainInput').value.trim();
+    if (!domain) { showToast('error', 'Please enter a job domain.'); return; }
+    if (uploadedFiles.length === 0) { showToast('error', 'No files uploaded.'); return; }
+
+    setLoading(true, `Analysing ${uploadedFiles.length} resume(s)…`);
+
+    const formData = new FormData();
+    formData.append('domain', domain);
+    uploadedFiles.forEach(f => formData.append('resumes', f));
+
+    try {
+      const res = await fetch('/api/leaderboard', { method: 'POST', body: formData });
+      const data = await res.json();
+
+      if (!res.ok || data.error) {
+        throw new Error(data.error || 'Server error');
+      }
+
+      leaderboardData = data.leaderboard;
+      renderLeaderboard(data);
+      showView('results');
+      showToast('success', `Analysis complete · ${data.total_candidates} candidate(s) ranked`);
+
+    } catch (err) {
+      showToast('error', 'Analysis failed: ' + err.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  // ---- Render leaderboard ----
+  function renderLeaderboard(data) {
+    const { leaderboard, summary, domain } = data;
+
+    document.getElementById('results-domain-tag').textContent = `02 · Results · ${domain}`;
+    document.getElementById('results-title').textContent = 'LEADERBOARD';
+
+    // Summary stats
+    const statsEl = document.getElementById('summary-stats');
+    statsEl.innerHTML = `
+      <div class="stat-card">
+        <div class="stat-value">${summary.total_candidates}</div>
+        <div class="stat-label">Candidates</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">${(summary.average_score * 100).toFixed(1)}<span style="font-size:18px;">%</span></div>
+        <div class="stat-label">Avg Score</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" style="font-size:22px;margin-top:4px;">${summary.top_candidate || '—'}</div>
+        <div class="stat-label">Top Candidate</div>
+      </div>
+      <div class="stat-card">
+        <div style="display:flex;gap:14px;margin-top:2px;">
+          <div>
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--green);">${summary.score_distribution.strong}</div>
+            <div class="stat-label" style="color:var(--green);">Strong</div>
+          </div>
+          <div>
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--yellow);">${summary.score_distribution.medium}</div>
+            <div class="stat-label" style="color:var(--yellow);">Medium</div>
+          </div>
+          <div>
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--red);">${summary.score_distribution.weak}</div>
+            <div class="stat-label" style="color:var(--red);">Weak</div>
+          </div>
+        </div>
+        <div class="stat-label" style="margin-top:8px;">Skill Distribution</div>
+      </div>
+    `;
+
+    // Rows
+    const body = document.getElementById('lb-body');
+    body.innerHTML = leaderboard.map(c => {
+      const rankClass = c.rank <= 3 ? `rank-${c.rank}` : 'rank-other';
+      const pct = Math.round(c.score * 100);
+      const scoreColor = pct >= 70 ? 'var(--green)' : pct >= 45 ? 'var(--yellow)' : 'var(--red)';
+
+      const totalSkills = c.net_skills || 0;
+      const strong = c.metrics?.total_strong_skills || 0;
+      const confLabel = strong > totalSkills * 0.5 ? 'Strong' : strong > totalSkills * 0.25 ? 'Medium' : 'Weak';
+      const confClass = confLabel === 'Strong' ? 'conf-strong' : confLabel === 'Medium' ? 'conf-medium' : 'conf-weak';
+
+      const note = c.recruiter_note || '';
+      const noteShort = note.length > 70 ? note.substring(0, 70) + '…' : note;
+
+      return `
+        <div class="lb-row ${rankClass} animate-in" onclick="openPanel(${c.rank - 1})" style="animation-delay:${(c.rank-1)*0.06}s">
+          <div class="rank-badge">${c.rank}</div>
+          <div>
+            <div style="font-size:13px;font-weight:500;color:var(--text);">${c.name}</div>
+            <div style="font-size:10px;color:var(--muted);margin-top:2px;">${totalSkills} skills detected</div>
+          </div>
+          <div>
+            <div style="font-size:16px;font-family:'Bebas Neue',sans-serif;color:${scoreColor};">${pct}%</div>
+            <div class="score-bar-wrap" style="width:80px;">
+              <div class="score-bar-fill" style="width:${pct}%;background:${scoreColor};"></div>
+            </div>
+          </div>
+          <div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              ${strong > 0 ? `<span class="conf-badge conf-strong">${strong} str</span>` : ''}
+              ${(c.metrics?.total_medium_skills || 0) > 0 ? `<span class="conf-badge conf-medium">${c.metrics.total_medium_skills} med</span>` : ''}
+              ${(c.metrics?.total_weak_skills || 0) > 0 ? `<span class="conf-badge conf-weak">${c.metrics.total_weak_skills} weak</span>` : ''}
+            </div>
+          </div>
+          <div><span class="conf-badge ${confClass}">${confLabel}</span></div>
+          <div style="font-family:'IBM Plex Sans',sans-serif;font-size:11px;color:var(--muted2);line-height:1.5;">${noteShort}</div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // ---- Detail panel ----
+  function openPanel(idx) {
+    const c = leaderboardData[idx];
+    if (!c) return;
+
+    document.getElementById('panel-name').textContent = c.name;
+
+    const pct = Math.round(c.score * 100);
+    const scoreColor = pct >= 70 ? 'var(--green)' : pct >= 45 ? 'var(--yellow)' : 'var(--red)';
+
+    let skillsHTML = '';
+    if (c.skills && Object.keys(c.skills).length > 0) {
+      Object.entries(c.skills).forEach(([cat, list]) => {
+        if (!list || list.length === 0) return;
+        const catLabel = cat.replace(/_/g, ' ').toUpperCase();
+        skillsHTML += `
+          <div style="margin-bottom:14px;">
+            <p style="font-size:9px;letter-spacing:0.18em;color:var(--muted);text-transform:uppercase;margin-bottom:8px;">${catLabel}</p>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;">
+              ${list.map(s => `
+                <span class="skill-tag">
+                  <span class="conf-badge ${s.confidence === 'strong' ? 'conf-strong' : s.confidence === 'medium' ? 'conf-medium' : 'conf-weak'}" style="padding:1px 5px;font-size:8px;">${s.confidence}</span>
+                  ${s.skill}
+                </span>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      });
+    } else {
+      skillsHTML = `<p style="font-size:12px;color:var(--muted);">No skills detected.</p>`;
     }
 
-    function removeFile(idx) {
-      uploadedFiles.splice(idx, 1);
-      renderFileList();
-      document.getElementById('analyzeBtn').disabled = uploadedFiles.length === 0;
-    }
+    document.getElementById('panel-content').innerHTML = `
+      <!-- Score header -->
+      <div style="display:flex;gap:16px;margin-bottom:24px;">
+        <div class="stat-card" style="text-align:center;">
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:48px;line-height:1;color:${scoreColor};">${pct}<span style="font-size:22px;">%</span></div>
+          <div class="stat-label">Skill Strength</div>
+        </div>
+        <div class="stat-card">
+          <div style="font-size:11px;color:var(--muted2);line-height:2.2;">
+            <div>Rank <span style="color:var(--amber);font-family:'Bebas Neue',sans-serif;font-size:18px;"> #${c.rank}</span></div>
+            <div>Total skills <span style="color:var(--text);">${c.net_skills}</span></div>
+            <div>Weighted sum <span style="color:var(--text);">${c.weighted_sum}</span></div>
+          </div>
+        </div>
+      </div>
 
-    function setDomain(d) { document.getElementById('domainInput').value = d; }
+      <!-- Confidence breakdown mini bar -->
+      <div style="margin-bottom:24px;">
+        <div class="section-label">Confidence Breakdown</div>
+        <div style="display:flex;gap:0;height:6px;border-radius:0;overflow:hidden;margin-bottom:8px;">
+          ${(c.metrics?.total_strong_skills || 0) > 0 ? `<div style="flex:${c.metrics.total_strong_skills};background:var(--green);"></div>` : ''}
+          ${(c.metrics?.total_medium_skills || 0) > 0 ? `<div style="flex:${c.metrics.total_medium_skills};background:var(--yellow);"></div>` : ''}
+          ${(c.metrics?.total_weak_skills || 0) > 0 ? `<div style="flex:${c.metrics.total_weak_skills};background:var(--red);"></div>` : ''}
+        </div>
+        <div style="display:flex;gap:16px;font-size:10px;color:var(--muted);">
+          <span style="color:var(--green);">● ${c.metrics?.total_strong_skills || 0} Strong</span>
+          <span style="color:var(--yellow);">● ${c.metrics?.total_medium_skills || 0} Medium</span>
+          <span style="color:var(--red);">● ${c.metrics?.total_weak_skills || 0} Weak</span>
+        </div>
+      </div>
 
-    // Rest of your JS logic for `runAnalysis`, `renderLeaderboard`, and `openPanel` remains exactly the same!
-    function showView(name) {
-      document.getElementById('view-upload').style.display = name === 'upload' ? 'block' : 'none';
-      document.getElementById('view-results').style.display = name === 'results' ? 'block' : 'none';
-      if (name === 'results') document.getElementById('nav-results').style.display = 'flex';
+      <!-- Recruiter note -->
+      <div style="margin-bottom:24px;">
+        <div class="section-label">Recruiter's Note <span style="letter-spacing:normal;color:var(--amber);font-size:8px;"> · </span></div>
+        <div class="recruiter-note">${c.recruiter_note || 'No note generated.'}</div>
+      </div>
+
+      <!-- Skills -->
+      <div>
+        <div class="section-label">Detected Skills</div>
+        ${skillsHTML}
+      </div>
+    `;
+
+    document.getElementById('detail-panel').classList.add('open');
+    document.getElementById('panel-overlay').classList.add('open');
+  }
+
+  function closePanel() {
+    document.getElementById('detail-panel').classList.remove('open');
+    document.getElementById('panel-overlay').classList.remove('open');
+  }
+
+  // ---- View switching ----
+  function showView(name) {
+    document.getElementById('view-upload').style.display  = name === 'upload'  ? 'block' : 'none';
+    document.getElementById('view-results').style.display = name === 'results' ? 'block' : 'none';
+
+    const navResults = document.getElementById('nav-results');
+    if (name === 'results') navResults.style.display = 'flex';
+
+    document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+    if (name === 'upload') {
+      document.querySelectorAll('.nav-item')[0].classList.add('active');
+      document.getElementById('topbar-title').textContent = 'HR Dashboard · Upload';
+    } else {
+      document.querySelectorAll('.nav-item')[1].classList.add('active');
+      document.getElementById('topbar-title').textContent = 'HR Dashboard · Leaderboard';
     }
-    function closePanel() {
-      document.getElementById('detail-panel').classList.remove('open');
-      document.getElementById('panel-overlay').classList.remove('open');
-    }
-  </script>
+  }
+
+  // ---- Loading state ----
+  function setLoading(on, msg = '') {
+    document.getElementById('loader').style.display = on ? 'block' : 'none';
+    document.getElementById('topbar-status').textContent = on ? msg : 'Ready';
+    document.getElementById('analyzeBtn').disabled = on;
+  }
+
+  // ---- Toast ----
+  function showToast(type, msg) {
+    const t = document.getElementById('toast');
+    document.getElementById('toast-msg').textContent = msg;
+    document.getElementById('toast-icon').textContent = type === 'error' ? '✕' : '✓';
+    document.getElementById('toast-icon').style.color = type === 'error' ? 'var(--red)' : 'var(--green)';
+    t.className = `toast show ${type}`;
+    setTimeout(() => t.className = 'toast', 4000);
+  }
+</script>
+
 </body>
-
 </html>

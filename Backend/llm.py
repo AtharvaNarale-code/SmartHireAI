@@ -1,7 +1,7 @@
-from google import genai 
+from google import genai
 
-def get_recruiter_note(api_key,name,domain,skills,score):
-    client = genai.Client(api_key)
+def get_recruiter_note(api_key, name, domain, skills, score):
+    client = genai.Client(api_key=api_key)
     try:
         response = client.models.generate_content(
             model="gemini-2.5-flash-lite",
@@ -9,10 +9,15 @@ def get_recruiter_note(api_key,name,domain,skills,score):
         )
         return response.text.strip()
     except Exception as e:
-        return f"Error :{e}"
-    
-def get_candidate_roadmap(api_key,name,domain,skills,score):
+        return f"Error: {e}"
+
+def get_candidate_roadmap(api_key, name, domain, skills, score):
+    """
+    Generates Skill Gaps, a Learning Path, and a Mermaid Flowchart.
+    """
     client = genai.Client(api_key=api_key)
+    
+    # Inside get_candidate_roadmap in llm.py
     prompt = f"""
     Act as a Technical Career Coach. 
     Candidate Background: {skills} (Score: {score})
@@ -40,4 +45,3 @@ def get_candidate_roadmap(api_key,name,domain,skills,score):
             "learning_path": ["Focus on core domain fundamentals."], 
             "mermaid_chart": "graph TD\n  A[Start] --> B[Learn Fundamentals] --> C[Target Role]"
         }
-    
