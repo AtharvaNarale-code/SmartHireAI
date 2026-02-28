@@ -1,0 +1,7 @@
+#Ignore Virtual environment and other files
+venv/
+smart/
+
+__pycache__/
+*.pyc\
+.env
