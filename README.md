@@ -131,12 +131,12 @@ Final Score: 68%
 ---
 ## ⚙ Setup & Installation
 
-1) Install Dependencies:                                                                                                                                                                                              pip install flask google-genai python-dotenv pdfplumber                                                                                                                                                                
+1) Install Dependencies:                                                                                                                                                                                             - pip install flask google-genai python-dotenv pdfplumber                                                                                                                                                                
 2) Configure Environment Variables
-Create a .env file in the root directory:                                                                                                                                                                          GEMINI_API_KEY=your_api_key_here
+-Create a .env file in the root directory:                                                                                                                                                                          --GEMINI_API_KEY=your_api_key_here
 
-3) Run the Application                                                                                                                                                                                                 python app.py                                                                                                                                                                                                       Server will start at:
- http://127.0.0.1:5000
+3) Run the Application                                                                                                                                                                                               -  python app.py                                                                                                                                                                                                      - Server will start at:
+ -http://127.0.0.1:5000
 ---
 
 SmartHire-AI/
