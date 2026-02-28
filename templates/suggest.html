@@ -604,7 +604,7 @@
       }
 
       const result = JSON.parse(raw);
-      setMsg('Requesting neural pathway generation from Claude…');
+      setMsg('Requesting neural pathway generation…');
 
       try {
         const res = await fetch('/api/candidate/suggest', {
