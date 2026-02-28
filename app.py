@@ -16,27 +16,22 @@ from Backend.ranking import get_domain_leaderboard, build_leaderboard_summary
 load_dotenv()   
 GEMINI_KEY = os.getenv("GEMINI_API_KEY")
 
-
 app = Flask(__name__)
-app.config["MAX_CONTENT_LENGTH"] = 32 * 1024 * 1024  # space for resumes
+app.config["MAX_CONTENT_LENGTH"] = 32 * 1024 * 1024  # 32 MB 
+
 
 @app.route("/")
 def index():
-    """Landing page — choose HR or Candidate view."""
     return render_template("index.html")
 
 
 @app.route("/hr")
 def hr_view():
-    """Full HR dashboard."""
     return render_template("hr.html")
 
 
+
 def _process_single_resume(file, candidate_name: str, domain: str) -> dict:
-    """
-    PDF → Extraction → Scoring → AI Recruiter Note.
-    Always returns a dict; errors are captured, never raised.
-    """
     try:
         # 1. Extract text from PDF
         raw_text = pdf_extract(file)
@@ -77,7 +72,6 @@ def _process_single_resume(file, candidate_name: str, domain: str) -> dict:
         }
 
 
-# API routes
 @app.route("/api/health", methods=["GET"])
 def health():
     return jsonify({"status": "ok"})
@@ -98,6 +92,7 @@ def leaderboard():
     # Process every resume
     candidates = []
     for i, file in enumerate(valid_files):
+        
         if i < len(names) and names[i].strip():
             name = names[i].strip()
         else:
@@ -106,7 +101,7 @@ def leaderboard():
 
         candidates.append(_process_single_resume(file, name, domain))
 
-    # Rank and summarize
+    # Rank and summarise
     ranked  = get_domain_leaderboard(candidates)
     summary = build_leaderboard_summary(ranked)
 
@@ -121,6 +116,7 @@ def leaderboard():
 
 @app.route("/api/recruiter-note", methods=["POST"])
 def recruiter_note_endpoint():
+    
     body = request.get_json(force=True, silent=True)
     if not body:
         return jsonify({"error": "Missing or invalid JSON body."}), 400
@@ -139,10 +135,10 @@ def candidate_view(): return render_template("candidate.html")
 @app.route("/suggest")
 def suggest_view(): return render_template("suggest.html")
 
-# CANDIDATE API
+#CANDIDATE API 
 @app.route("/api/candidate/analyse", methods=["POST"])
 def candidate_analyse():
-    
+    """Single resume analysis for the Candidate Portal."""
     file = request.files.get("resume")
     name = request.form.get("name", "Candidate")
     domain = request.form.get("domain", "Software Engineering")
@@ -154,7 +150,7 @@ def candidate_analyse():
     metrics = generate_analysis_metrics(skills)
     scoring = calculate_skill_strength(metrics)
     
-    # Get the HR note (used as a summary to result page)
+    # Get the HR note (used as a summary on the result page)
     note = get_recruiter_note(GEMINI_KEY, name, domain, skills, scoring["skill_strength_score"])
     
     return jsonify({
@@ -177,6 +173,8 @@ def candidate_suggest():
 
 
 #API routing
+
+
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
