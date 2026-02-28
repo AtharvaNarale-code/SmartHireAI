@@ -72,7 +72,25 @@ Skills are detected contextually and categorized into three levels:
 - Medium (1.0x multiplier)
 - Weak (0.3x multiplier)
 
-### Final Score Formula
+
+### Key Logic Enhancements
+- Experience sections receive higher credibility
+- Deeper project involvement increases ranking
+- Complex skills require strong action verbs
+- Keyword stuffing is prevented through contextual validation
+
+---
+
+## HR Intelligence Dashboard
+
+Designed for fast and efficient resume screening.
+
+Features:
+- Batch resume uploads
+- Automatic leaderboard ranking
+- AI-generated 40-word recruiter summaries
+- Skill distribution visualization
+
 
 ## 📷 Dashboard View
 
@@ -80,11 +98,37 @@ Skills are detected contextually and categorized into three levels:
   <img src="images/DAshboard.png" width="800"/>
 </p>
 
+---
+
+## Candidate Development Portal
+
+A transparent evaluation interface to help candidates understand their fitment.
+
+Features:
+- Domain-specific scoring (e.g., ML Engineer, Game Developer)
+- Identified skill gaps
+- AI-generated step-by-step learning roadmap
+- Mermaid.js based roadmap visualization
+
 ## 📷 Candidate View
 
 <p align="center">
   <img src="images/Candidate%20view.png" width="800"/>
 </p>
+
+---
+
+## Skill Strength Breakdown Example
+
+- Strong Skills: 11  
+- Medium Skills: 2  
+- Weak Skills: 12  
+
+Total Skills Detected: 25  
+Weighted Skill Sum: 23.2  
+Final Score: 68%
+
+---
 ⚙ Setup & Installation
 
 1) Install Dependencies:                                                                                                                                                                                              pip install flask google-genai python-dotenv pdfplumber                                                                                                                                                                
@@ -93,3 +137,20 @@ Create a .env file in the root directory:                                       
 
 3) Run the Application                                                                                                                                                                                                 python app.py                                                                                                                                                                                                       Server will start at:
  http://127.0.0.1:5000
+
+
+SmartHire-AI/
+│
+├── app.py
+├── Backend/
+│   ├── Skilldomain.py
+│   ├── scoring_engine.py
+│
+├── templates/
+├── static/
+├── images/
+│   ├── setup.jpeg
+│   ├── leaderboard.jpeg
+│   ├── candidate-detail.jpeg
+│
+└── README.md
