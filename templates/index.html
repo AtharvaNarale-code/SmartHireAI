@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SmartHire AI</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+
+    /* internal css */
+    :root {
+      --amber: #F5A623;
+      --ink:   #050505;
+      --s1:    rgba(15, 15, 15, 0.6); /* Semi-transparent for glass effect */
+      --border:#2A2A2A;
+      --text:  #E8E4DC;
+      --muted: #888888;
+      --teal:  #2DD4BF;
+    }
+    
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      background: var(--ink);
+      color: var(--text);
+      font-family: 'IBM Plex Mono', monospace;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* CRT Scanline Effect */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px);
+      pointer-events: none; z-index: 10;
+    }
+
+    /* Animated Ambient Glow */
+    .bg-glow {
+      position: fixed; inset: 0;
+      background: radial-gradient(circle at 50% 50%, rgba(245,166,35,0.08) 0%, transparent 60%);
+      pointer-events: none;
+      animation: breathe 8s ease-in-out infinite alternate;
+    }
+
+    .bg-grid {
+      position: fixed; inset: 0;
+      background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+    }
+
+    /* Typography */
+    .title-main { 
+      font-family:'Bebas Neue',sans-serif; 
+      font-size:clamp(4rem, 10vw, 7.5rem); 
+      letter-spacing:0.04em; 
+      line-height:0.9; 
+      text-shadow: 0 0 40px rgba(245,166,35,0.2);
+    }
+    .tagline { 
+      font-size:12px; 
+      letter-spacing:0.25em; 
+      color:var(--muted); 
+      text-transform:uppercase; 
+    }
+
+    /* Header */
+    .top-header {
+      position: fixed; top: 0; left: 0; right: 0;
+      border-bottom: 1px solid var(--border);
+      padding: 16px 40px;
+      display: flex; align-items: center; justify-content: space-between;
+      z-index: 20;
+      background: rgba(5, 5, 5, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    /* Layout */
+    .main-wrapper {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 120px 24px 60px;
+      position: relative; z-index: 2;
+    }
+
+    .card-container {
+      display: flex;
+      gap: 32px;
+      align-items: stretch;
+      justify-content: center;
+      flex-wrap: wrap;
+      width: 100%;
+      max-width: 900px;
+    }
+
+    /* Cards */
+    .role-card {
+      border: 1px solid var(--border);
+      background: var(--s1);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 48px 40px;
+      position: relative;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow: hidden;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-width: 280px;
+      max-width: 400px;
+      border-radius: 4px;
+    }
+
+    .role-card::before {
+      content: ''; position: absolute; inset: 0;
+      opacity: 0; transition: opacity 0.4s ease;
+      z-index: 0;
+    }
+    
+    .role-card.hr-card::before   { background: radial-gradient(circle at top right, rgba(245,166,35,0.1) 0%, transparent 70%); }
+    .role-card.cand-card::before { background: radial-gradient(circle at top right, rgba(45,212,191,0.1) 0%, transparent 70%); }
+    
+    .role-card:hover { 
+      transform: translateY(-8px); 
+    }
+    .role-card.hr-card:hover { 
+      border-color: rgba(245,166,35,0.5); 
+      box-shadow: 0 24px 40px rgba(0,0,0,0.8), 0 0 40px rgba(245,166,35,0.1); 
+    }
+    .role-card.cand-card:hover { 
+      border-color: rgba(45,212,191,0.5);  
+      box-shadow: 0 24px 40px rgba(0,0,0,0.8), 0 0 40px rgba(45,212,191,0.1); 
+    }
+
+    /* Card Content */
+    .card-content { position: relative; z-index: 1; flex-grow: 1; }
+    
+    .card-number { font-size:11px; letter-spacing:0.3em; margin-bottom:24px; display:block; font-weight: 600;}
+    .hr-card .card-number { color: var(--amber); }
+    .cand-card .card-number { color: var(--teal); }
+
+    .card-title { font-family:'Bebas Neue',sans-serif; font-size:42px; letter-spacing:0.05em; line-height:1; margin-bottom:16px; color: #FFF; }
+    .card-desc  { font-family:'IBM Plex Sans',sans-serif; font-size:14px; color:var(--muted); line-height:1.7; }
+
+    .card-arrow {
+      margin-top: 32px;
+      width:40px; height:40px; 
+      border:1px solid var(--border); border-radius: 50%;
+      display:flex; align-items:center; justify-content:center;
+      font-size:16px; transition:all 0.3s ease;
+      color: var(--muted);
+      align-self: flex-end;
+    }
+    .hr-card:hover .card-arrow { border-color:var(--amber); background:rgba(245,166,35,0.1); color:var(--amber); transform: translateX(5px) rotate(-45deg); }
+    .cand-card:hover .card-arrow { border-color:var(--teal); background:rgba(45,212,191,0.1); color:var(--teal); transform: translateX(5px) rotate(-45deg); }
+
+    /* Badges & Dots */
+    .live-badge {
+      position:absolute; top:20px; right:20px;
+      font-size:10px; letter-spacing:0.15em; color:var(--teal); font-weight: 600;
+      border:1px solid rgba(45,212,191,0.3); padding:4px 10px; border-radius: 20px;
+      display:flex; align-items:center; gap:6px;
+      background: rgba(45,212,191,0.05);
+    }
+    .live-dot { width:6px; height:6px; border-radius:50%; background:var(--teal); animation:pulse 2s infinite; }
+    .status-dot { width:8px; height:8px; border-radius:50%; background:var(--amber); animation:pulse 2s infinite; display:inline-block; box-shadow: 0 0 10px var(--amber); }
+
+    /* Animations */
+    @keyframes fadeInUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes pulse { 0%,100%{opacity:1; transform:scale(1);} 50%{opacity:0.4; transform:scale(0.8);} }
+    @keyframes breathe { 0% { opacity: 0.6; transform: scale(1); } 100% { opacity: 1; transform: scale(1.05); } }
+
+    .animate-in { animation:fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity:0; }
+    .delay-1 { animation-delay:0.1s; }
+    .delay-2 { animation-delay:0.25s; }
+    .delay-3 { animation-delay:0.4s; }
+  </style>
+</head>
+<body>
+  <div class="bg-grid"></div>
+  <div class="bg-glow"></div>
+
+  <header class="top-header">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <span class="status-dot"></span>
+      <span style="font-size:12px;letter-spacing:0.2em;color:#A0A0A0;text-transform:uppercase;font-weight:500;">SmartHire AI <span style="color:#555;">· v1.0</span></span>
+    </div>
+  </header>
+
+  <main class="main-wrapper">
+
+    <div class="animate-in delay-1" style="text-align:center;margin-bottom:72px;">
+      <p class="tagline" style="margin-bottom:20px; color: var(--amber);">AI-Powered Recruitment Intelligence</p>
+      <h1 class="title-main">SMART<span style="color:var(--amber);">HIRE</span></h1>
+      <p class="tagline" style="margin-top:20px;color:#666;">Select your access level to initialize</p>
+    </div>
+
+    <div class="card-container animate-in delay-2">
+
+      <a href="/hr" class="role-card hr-card">
+        <div class="card-content">
+          <span class="card-number">01 / HR PORTAL</span>
+          <div class="card-title">RECRUITER<br>VIEW</div>
+          <p class="card-desc">Upload multiple resumes, run batch AI analysis, and view ranked leaderboards with intelligent recruiter notes.</p>
+        </div>
+        <div class="card-arrow">→</div>
+      </a>
+
+      <a href="/candidate" class="role-card cand-card">
+        <div class="live-badge"><span class="live-dot"></span> LIVE</div>
+        <div class="card-content">
+          <span class="card-number">02 / CANDIDATE PORTAL</span>
+          <div class="card-title">CANDIDATE<br>VIEW</div>
+          <p class="card-desc">Upload your resume and get a personalized skill score with an AI-powered gap analysis and learning roadmap.</p>
+        </div>
+        <div class="card-arrow">→</div>
+      </a>
+
+    </div>
+
+    <div class="animate-in delay-3" style="margin-top:80px;text-align:center;">
+      <p style="font-size:11px;letter-spacing:0.15em;color:#444;text-transform:uppercase; display:flex; align-items:center; gap:8px; justify-content:center;">
+        <span style="width:20px;height:1px;background:#333;display:inline-block;"></span>
+        <span style="width:20px;height:1px;background:#333;display:inline-block;"></span>
+      </p>
+    </div>
+
+  </main>
+</body>
+</html>
