@@ -1,4 +1,4 @@
-SmartHire AI solves the “Black Box” problem in recruitment For HR Teams
+**SmartHire AI solves the “Black Box” problem in recruitment For HR Teams**
 Data-driven candidate leaderboard
 Skill confidence analysis
 AI-generated recruiter summaries
