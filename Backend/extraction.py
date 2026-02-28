@@ -75,5 +75,30 @@ def detect_confidence(context_line: str, section: str) -> str:
             return level
 
     return "weak"
-    
+   
+# SKILL EXTRACTION (DEDUP FIXED)
+
+def extract_skill_from_resume(resume_json: Dict, skill_dict: Dict) -> Dict:
+
+    sections = {
+        "summary":  resume_json.get("summary", ""),
+        "projects": resume_json.get("projects", ""),
+        "skills":   resume_json.get("skills", ""),
+        "experience": resume_json.get("experience", "")
+    }
+
+    extracted_skills: Dict[str, list] = {
+        "languages":   [],
+        "frameworks":  [],
+        "databases":   [],
+        "ml_tools":    [],
+        "cloud_tools": [],
+        "concepts":    [],
+        "other_tools": [],
+    }
+     skill_conf_map = {}  
+
+
+                
+
 
