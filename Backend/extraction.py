@@ -179,12 +179,12 @@ def generate_analysis_metrics(extracted_skills: Dict) -> Dict:
         ),
     }
 
-# SKILL STRENGTH SCORE (REFINED)
+# SKILL STRENGTH SCORE 
 
 
 def calculate_skill_strength(analysis_metrics: Dict) -> Dict:
 
-    WEIGHTS = {"strong": 1.6, "medium": 1.0, "weak": 0.3}  # weak reduced
+    WEIGHTS = {"strong": 1.6, "medium": 1.0, "weak": 0.3}  
 
     strong = analysis_metrics.get("total_strong_skills", 0)
     medium = analysis_metrics.get("total_medium_skills", 0)
