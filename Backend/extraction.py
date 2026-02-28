@@ -4,8 +4,9 @@ from typing import Dict
 from Backend import Skilldomain
 
 
+# ===============================
 # PDF EXTRACTION
-
+# ===============================
 
 def pdf_extract(uploaded_file) -> str | None:
     extracted_text = ""
@@ -32,7 +33,10 @@ def pdf_extract(uploaded_file) -> str | None:
         print(f"[pdf_extract] Error: {e}")
         return None
 
+
+# ===============================
 # SECTION MAPPING
+# ===============================
 
 def list_to_json(cleaned_text: str) -> Dict[str, str]:
     data = {key: "" for key in Skilldomain.sections_map.keys()}
@@ -56,8 +60,9 @@ def list_to_json(cleaned_text: str) -> Dict[str, str]:
     return data
 
 
+# ===============================
 # CONFIDENCE DETECTION
-
+# ===============================
 
 COMPLEX_TERMS = {
     "architecture", "scalable", "distributed", "microservices",
@@ -72,7 +77,7 @@ def detect_confidence(context_line: str, section: str) -> str:
     text = context_line.lower()
     words = set(re.findall(r"\b\w+\b", text))
 
-    # Complex terms now require strong verb to qualify
+    # 🔥 Complex terms now require strong verb to qualify
     if any(term in text for term in COMPLEX_TERMS) and \
        any(word in words for word in Skilldomain.SIGNAL_MAP["strong"]):
         return "strong"
@@ -84,7 +89,9 @@ def detect_confidence(context_line: str, section: str) -> str:
     return "weak"
 
 
+# ===============================
 # SKILL EXTRACTION (DEDUP FIXED)
+# ===============================
 
 def extract_skill_from_resume(resume_json: Dict, skill_dict: Dict) -> Dict:
 
@@ -105,7 +112,7 @@ def extract_skill_from_resume(resume_json: Dict, skill_dict: Dict) -> Dict:
         "other_tools": [],
     }
 
-    skill_conf_map = {}  # store best confidence per skill
+    skill_conf_map = {}  # 🔥 store best confidence per skill
 
     for category, skills in skill_dict.items():
         for skill_key, skill_data in skills.items():
@@ -117,11 +124,11 @@ def extract_skill_from_resume(resume_json: Dict, skill_dict: Dict) -> Dict:
                 pattern = r"\b" + re.escape(alias) + r"\b"
 
                 for section_name, section_text in sections.items():
-                    for line in re.split(r"[.\n•]", section_text):  # removed hyphen split
+                    for line in re.split(r"[.\n•]", section_text):  # 🔥 removed hyphen split
                         if re.search(pattern, line, re.IGNORECASE):
                             conf = detect_confidence(line.strip(), section_name)
 
-                            # Experience section gets slight upgrade
+                            # 🔥 Experience section gets slight upgrade
                             if section_name == "experience" and conf == "medium":
                                 conf = "strong"
 
@@ -160,8 +167,9 @@ def extract_skill_from_resume(resume_json: Dict, skill_dict: Dict) -> Dict:
     return {k: v for k, v in extracted_skills.items() if v}
 
 
+# ===============================
 # ANALYSIS METRICS
-
+# ===============================
 
 def generate_analysis_metrics(extracted_skills: Dict) -> Dict:
     return {
@@ -179,12 +187,14 @@ def generate_analysis_metrics(extracted_skills: Dict) -> Dict:
         ),
     }
 
-# SKILL STRENGTH SCORE 
 
+# ===============================
+# SKILL STRENGTH SCORE (REFINED)
+# ===============================
 
 def calculate_skill_strength(analysis_metrics: Dict) -> Dict:
 
-    WEIGHTS = {"strong": 1.6, "medium": 1.0, "weak": 0.3}  
+    WEIGHTS = {"strong": 1.6, "medium": 1.0, "weak": 0.3}  # 🔥 weak reduced
 
     strong = analysis_metrics.get("total_strong_skills", 0)
     medium = analysis_metrics.get("total_medium_skills", 0)
@@ -207,7 +217,7 @@ def calculate_skill_strength(analysis_metrics: Dict) -> Dict:
 
     base_score = weighted_sum / (net_skills * WEIGHTS["strong"])
 
-    # Volume bonus only if strong+medium >= 8
+    # 🔥 Volume bonus only if strong+medium >= 8
     strong_medium_total = strong + medium
     if strong_medium_total >= 8:
         volume_bonus = min((strong_medium_total - 8) * 0.02, 0.12)
@@ -223,8 +233,9 @@ def calculate_skill_strength(analysis_metrics: Dict) -> Dict:
     }
 
 
+# ===============================
 # PROJECT DEPTH SCORE
-
+# ===============================
 
 def calculate_project_depth_score(resume_json: Dict, skill_dict: Dict) -> float:
 
