@@ -2,7 +2,7 @@ import re
 import pdfplumber
 from typing import Dict
 from Backend import Skilldomain
-
+from Backend import Skilldomain
 #Pdf Extraction
 
 def pdf_extract(uploaded_file) -> str | None:
@@ -96,7 +96,7 @@ def extract_skill_from_resume(resume_json: Dict, skill_dict: Dict) -> Dict:
         "concepts":    [],
         "other_tools": [],
     }
-     skill_conf_map = {}  
+    skill_conf_map = {}  
 # store best confidence per skill
 
     for category, skills in skill_dict.items():
