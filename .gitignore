@@ -5,3 +5,8 @@ smart/
 __pycache__/
 *.pyc\
 .env
+
+# .gitignore 
+.env
+smart/
+__pycache__/
