@@ -139,18 +139,19 @@ Create a .env file in the root directory:                                       
  http://127.0.0.1:5000
 ---
 
+## File Structure
+```
 SmartHire-AI/
-│
 ├── app.py
 ├── Backend/
 │   ├── Skilldomain.py
-│   ├── scoring_engine.py
+│   └── scoring_engine.py
 │
 ├── templates/
 ├── static/
 ├── images/
 │   ├── setup.jpeg
 │   ├── leaderboard.jpeg
-│   ├── candidate-detail.jpeg
+│   └── candidate-detail.jpeg
 │
-└── README.md
+└── README.md```
