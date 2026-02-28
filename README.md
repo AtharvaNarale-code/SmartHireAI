@@ -129,7 +129,7 @@ Weighted Skill Sum: 23.2
 Final Score: 68%
 
 ---
-⚙ Setup & Installation
+## ⚙ Setup & Installation
 
 1) Install Dependencies:                                                                                                                                                                                              pip install flask google-genai python-dotenv pdfplumber                                                                                                                                                                
 2) Configure Environment Variables
@@ -137,7 +137,7 @@ Create a .env file in the root directory:                                       
 
 3) Run the Application                                                                                                                                                                                                 python app.py                                                                                                                                                                                                       Server will start at:
  http://127.0.0.1:5000
-
+---
 
 SmartHire-AI/
 │
