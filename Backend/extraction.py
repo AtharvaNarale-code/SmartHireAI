@@ -50,4 +50,30 @@ def list_to_json(cleaned_text: str) -> Dict[str, str]:
 
     return data
     
+#Confidence Detection
+
+COMPLEX_TERMS = {
+    "architecture", "scalable", "distributed", "microservices",
+    "low latency", "high availability", "production",
+    "pipeline", "real-time", "concurrent", "asynchronous",
+}
+
+CONFIDENCE_RANK = {"weak": 1, "medium": 2, "strong": 3}
+
+
+def detect_confidence(context_line: str, section: str) -> str:
+    text = context_line.lower()
+    words = set(re.findall(r"\b\w+\b", text))
+
+    # 🔥 Complex terms now require strong verb to qualify
+    if any(term in text for term in COMPLEX_TERMS) and \
+       any(word in words for word in Skilldomain.SIGNAL_MAP["strong"]):
+        return "strong"
+
+    for level in ["strong", "medium", "weak"]:
+        if words & Skilldomain.SIGNAL_MAP[level]:
+            return level
+
+    return "weak"
+    
 
