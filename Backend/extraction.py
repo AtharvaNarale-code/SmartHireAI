@@ -122,8 +122,38 @@ def extract_skill_from_resume(resume_json: Dict, skill_dict: Dict) -> Dict:
 
             if best_conf:
                 skill_conf_map[canonical] = best_conf
+                
+# Map to structured categories
+
+for category, skills in skill_dict.items():
+        for skill_key, skill_data in skills.items():
+            canonical = skill_data["canonical"]
+
+            if canonical in skill_conf_map:
+                entry = {
+                    "skill": canonical,
+                    "confidence": skill_conf_map[canonical]
+                }
+
+                if category == "programming_languages":
+                    extracted_skills["languages"].append(entry)
+                elif category in ("frontend_frameworks", "backend_frameworks"):
+                    extracted_skills["frameworks"].append(entry)
+                elif category == "databases":
+                    extracted_skills["databases"].append(entry)
+                elif category == "data_science_ml":
+                    extracted_skills["ml_tools"].append(entry)
+                elif category == "cloud_devops":
+                    extracted_skills["cloud_tools"].append(entry)
+                elif category in ("concepts", "trading_concepts"):
+                    extracted_skills["concepts"].append(entry)
+                else:
+                    extracted_skills["other_tools"].append(entry)
+
+    return {k: v for k, v in extracted_skills.items() if v}
 
                 
+
 
 
 
