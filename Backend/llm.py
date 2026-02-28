@@ -11,3 +11,33 @@ def get_recruiter_note(api_key,name,domain,skills,score):
     except Exception as e:
         return f"Error :{e}"
     
+def get_candidate_roadmap(api_key,name,domain,skills,score):
+    client = genai.Client(api_key=api_key)
+    prompt = f"""
+    Act as a Technical Career Coach. 
+    Candidate Background: {skills} (Score: {score})
+    Target Role: {domain}
+
+    Compare candidate's skills against standard requirements for a {domain}. 
+    Even if candidate has high scores in their OWN field , 
+    identify what they LACK to enter {domain}.
+    generate linear chart in mermaid syntax showing learning path from current skills to target role.
+
+    Example: If a Data Scientist applies for Game Dev, identify 'C++' and 'Game Engines' as MAJOR gaps.
+    """
+    try:
+        response = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=prompt,
+            config={'response_mime_type': 'application/json'}
+        )
+        import json
+        return json.loads(response.text)
+    except Exception as e:
+        print(f"Roadmap Error: {e}")
+        return {
+            "skill_gaps": [], 
+            "learning_path": ["Focus on core domain fundamentals."], 
+            "mermaid_chart": "graph TD\n  A[Start] --> B[Learn Fundamentals] --> C[Target Role]"
+        }
+    
