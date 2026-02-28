@@ -152,7 +152,26 @@ for category, skills in skill_dict.items():
 
     return {k: v for k, v in extracted_skills.items() if v}
 
+# ANALYSIS METRICS
+
+def generate_analysis_metrics(extracted_skills: Dict) -> Dict:
+    return {
+        "total_strong_skills": sum(
+            1 for sl in extracted_skills.values()
+            for s in sl if s.get("confidence") == "strong"
+        ),
+        "total_medium_skills": sum(
+            1 for sl in extracted_skills.values()
+            for s in sl if s.get("confidence") == "medium"
+        ),
+        "total_weak_skills": sum(
+            1 for sl in extracted_skills.values()
+            for s in sl if s.get("confidence") == "weak"
+        ),
+    }
+    
                 
+
 
 
 
