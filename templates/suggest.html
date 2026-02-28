@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Analysis · SmartHire AI</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@300;400;500&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --amber: #F5A623;
+      --amber-lo: rgba(245, 166, 35, 0.1);
+      --teal: #2DD4BF;
+      --ink: #050505;
+      --s1: rgba(10, 10, 10, 0.75);
+      --s2: rgba(18, 18, 18, 0.6);
+      --s3: rgba(24, 24, 24, 0.8);
+      --border: #222222;
+      --border2: #333333;
+      --text: #E0DBD1;
+      --muted: #666666;
+      --muted2: #888888;
+      --green: #4ADE80;
+      --yellow: #FACC15;
+      --red: #F87171;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--ink);
+      color: var(--text);
+      font-family: 'IBM Plex Mono', monospace;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Ambient Backgrounds */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, 0.15) 2px, rgba(0, 0, 0, 0.15) 4px);
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    .bg-glow {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background: radial-gradient(circle at 50% 40%, rgba(245, 166, 35, 0.08) 0%, transparent 60%);
+      animation: breathe 8s ease-in-out infinite alternate;
+    }
+
+    .bg-grid {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+
+    /* ---- Layout ---- */
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 240px;
+      background: var(--s1);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      z-index: 50;
+    }
+
+    .main-area {
+      margin-left: 240px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .topbar {
+      height: 60px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      background: var(--s1);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      position: sticky;
+      top: 0;
+      z-index: 40;
+    }
+
+    .content {
+      padding: 40px 32px;
+      max-width: 1000px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* ---- Sidebar Elements ---- */
+    .logo-block {
+      padding: 28px 24px 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo-text {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 32px;
+      letter-spacing: 0.06em;
+      line-height: 1;
+      text-shadow: 0 0 20px rgba(245, 166, 35, 0.2);
+    }
+
+    .logo-sub {
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      color: var(--muted2);
+      text-transform: uppercase;
+      margin-top: 6px;
+    }
+
+    .nav-section {
+      padding: 24px 20px 10px;
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 20px;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--muted2);
+      cursor: pointer;
+      border-left: 2px solid transparent;
+      transition: all 0.2s;
+      text-transform: uppercase;
+      text-decoration: none;
+    }
+
+    .nav-item:hover {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .nav-item.active {
+      color: var(--amber);
+      border-left-color: var(--amber);
+      background: var(--amber-lo);
+      text-shadow: 0 0 10px rgba(245, 166, 35, 0.3);
+    }
+
+    .sidebar-footer {
+      margin-top: auto;
+      padding: 20px;
+      border-top: 1px solid var(--border);
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--amber);
+      animation: pulse 2s infinite;
+      display: inline-block;
+      box-shadow: 0 0 8px var(--amber);
+    }
+
+    /* ---- UI Elements ---- */
+    .section-label {
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      color: var(--muted2);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .glass-card {
+      background: var(--s2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 24px;
+    }
+
+    /* Loader */
+    .loader-bar {
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--amber), transparent);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+    }
+
+    @keyframes shimmer {
+      0% {
+        background-position: -200% 0
+      }
+
+      100% {
+        background-position: 200% 0
+      }
+    }
+
+    @keyframes breathe {
+      0% {
+        opacity: 0.5;
+        transform: scale(1);
+      }
+
+      100% {
+        opacity: 1;
+        transform: scale(1.05);
+      }
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 0.4;
+        transform: scale(0.8);
+      }
+    }
+
+    /* Loading screen */
+    .loading-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 60vh;
+      gap: 24px;
+    }
+
+    .loading-dots span {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--amber);
+      margin: 0 4px;
+      animation: dotpulse 1.4s infinite;
+      box-shadow: 0 0 10px var(--amber);
+    }
+
+    .loading-dots span:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .loading-dots span:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes dotpulse {
+
+      0%,
+      80%,
+      100% {
+        opacity: 0.2;
+        transform: scale(0.8)
+      }
+
+      40% {
+        opacity: 1;
+        transform: scale(1.2)
+      }
+    }
+
+    /* Gap card */
+    .gap-card {
+      background: rgba(245, 166, 35, 0.03);
+      border: 1px solid var(--border2);
+      padding: 20px;
+      border-left: 3px solid var(--amber);
+      border-radius: 4px;
+      margin-bottom: 12px;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .gap-card:hover {
+      transform: translateX(4px);
+      background: rgba(245, 166, 35, 0.06);
+    }
+
+    .gap-title {
+      font-size: 14px;
+      color: var(--text);
+      margin-bottom: 8px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .gap-desc {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 13px;
+      color: var(--muted2);
+      line-height: 1.7;
+    }
+
+    /* Mermaid container */
+    .mermaid-wrap {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 40px 24px;
+      overflow-x: auto;
+      min-height: 300px;
+      position: relative;
+      background-image: linear-gradient(rgba(45, 212, 191, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(45, 212, 191, 0.03) 1px, transparent 1px);
+      background-size: 20px 20px;
+      box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.8);
+    }
+
+    .mermaid-wrap .mermaid {
+      display: flex;
+      justify-content: center;
+      filter: drop-shadow(0 0 10px rgba(245, 166, 35, 0.1));
+    }
+
+    /* Recruiter note */
+    .rec-note {
+      background: linear-gradient(90deg, rgba(45, 212, 191, 0.05), transparent);
+      border-left: 2px solid var(--teal);
+      padding: 20px;
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 14px;
+      line-height: 1.7;
+      color: #D0C8B8;
+      font-style: italic;
+      border-radius: 0 4px 4px 0;
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    .animate-in {
+      animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      opacity: 0;
+    }
+
+    .delay-1 {
+      animation-delay: 0.1s;
+    }
+
+    .delay-2 {
+      animation-delay: 0.25s;
+    }
+
+    .delay-3 {
+      animation-delay: 0.4s;
+    }
+
+    .delay-4 {
+      animation-delay: 0.55s;
+    }
+
+    /* Back btn */
+    .back-btn {
+      background: transparent;
+      color: var(--muted2);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      border-radius: 4px;
+      padding: 10px 20px;
+      border: 1px solid var(--border2);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .back-btn:hover {
+      border-color: var(--teal);
+      color: var(--teal);
+      background: rgba(45, 212, 191, 0.05);
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--ink);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border2);
+      border-radius: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--muted);
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="bg-grid"></div>
+  <div class="bg-glow"></div>
+
+  <aside class="sidebar">
+    <div class="logo-block">
+      <div class="logo-text">SMART<span style="color:var(--amber);">HIRE</span></div>
+      <div class="logo-sub">AI Analysis Module</div>
+    </div>
+    <div style="flex:1;padding-top:16px;">
+      <div class="nav-section">Intelligence</div>
+      <div class="nav-item active">
+        <span style="font-size:14px;">✦</span> AI Roadmap
+      </div>
+
+      <div class="nav-section" style="margin-top:24px;">Navigate</div>
+      <a href="/candidate" class="nav-item">
+        <span style="font-size:14px;">◈</span> Score Lookup
+      </a>
+      <a href="/" class="nav-item">
+        <span style="font-size:14px;">←</span> Return Home
+      </a>
+    </div>
+    <div class="sidebar-footer">
+      <div style="font-size:10px;letter-spacing:0.15em;color:var(--muted);line-height:1.8;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px; color:var(--text);">
+        </div>
+        Generating visual<br>learning pathways
+      </div>
+    </div>
+  </aside>
+
+  <div class="main-area">
+    <div class="topbar">
+      <span
+        style="font-size:12px;letter-spacing:0.15em;color:var(--text);text-transform:uppercase; font-weight:500;">Candidate
+        <span style="color:var(--muted)">/</span> AI Analysis</span>
+      <span
+        style="font-size:11px;letter-spacing:0.15em;color:var(--amber);text-transform:uppercase; background:var(--amber-lo); padding:4px 12px; border-radius:20px;"
+        id="topbar-status">Initializing…</span>
+    </div>
+
+    <div id="loader" style="display:block;">
+      <div class="loader-bar"></div>
+    </div>
+
+    <div class="content">
+
+      <div class="loading-screen animate-in" id="loading-screen">
+        <div class="loading-dots"><span></span><span></span><span></span></div>
+        <p style="font-size:12px;letter-spacing:0.25em;color:var(--amber);text-transform:uppercase; text-shadow: 0 0 10px rgba(245,166,35,0.4);"
+          id="loading-msg">Synthesizing Profile Data...</p>
+      </div>
+
+      <div id="analysis-content" style="display:none;">
+
+        <div class="animate-in delay-1"
+          style="margin-bottom:40px;display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+          <div>
+            <p
+              style="font-size:11px;letter-spacing:0.3em;color:var(--amber);text-transform:uppercase;margin-bottom:10px;">
+              Step 03 // AI Generation</p>
+            <h2
+              style="font-family:'Bebas Neue',sans-serif;font-size:56px;letter-spacing:0.04em;line-height:0.9; color:#FFF; text-shadow: 0 0 30px rgba(255,255,255,0.1);"
+              id="page-title">SKILL ROADMAP</h2>
+          </div>
+          <a href="/candidate" class="back-btn"><span>←</span> Back to Score</a>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1.5fr;gap:24px;margin-bottom:32px; align-items: stretch;">
+
+          <div class="glass-card animate-in delay-1"
+            style="display: flex; flex-direction: column; justify-content: center;">
+            <div class="section-label">Candidate Baseline</div>
+            <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:16px;">
+              <span style="font-family:'Bebas Neue',sans-serif;font-size:64px;line-height:1;" id="recap-score">—</span>
+              <span style="font-size:16px;color:var(--muted2); letter-spacing: 0.1em;">/ 100</span>
+            </div>
+            <div style="display:flex;gap:16px;font-size:12px; font-weight:500;">
+              <span style="color:var(--green);" id="recap-strong">—</span>
+              <span style="color:var(--yellow);" id="recap-medium">—</span>
+              <span style="color:var(--red);" id="recap-weak">—</span>
+            </div>
+            <p style="font-size:11px;color:var(--muted);margin-top:16px; letter-spacing:0.1em; text-transform:uppercase;"
+              id="recap-domain">—</p>
+          </div>
+
+          <div class="glass-card animate-in delay-2"
+            style="display: flex; flex-direction: column; justify-content: center;">
+            <div class="section-label">AI Summary <span
+                style="color:var(--teal);letter-spacing:normal;font-size:9px; border:1px solid rgba(45,212,191,0.3); padding:2px 6px; border-radius:3px;">Generated</span>
+            </div>
+            <div class="rec-note" id="recruiter-note">—</div>
+          </div>
+        </div>
+
+        <div class="glass-card animate-in delay-2" style="margin-bottom:32px;">
+          <div class="section-label">Identified Vulnerabilities & Gaps</div>
+          <div id="gaps-container" style="margin-top:20px;">—</div>
+        </div>
+
+        <div class="glass-card animate-in delay-3" style="margin-bottom:32px; padding: 0; overflow: hidden;">
+          <div style="padding: 24px 24px 16px;">
+            <div class="section-label" style="margin-bottom: 0;">Target State Blueprint <span
+                style="color:var(--amber);letter-spacing:normal;font-size:9px; border:1px solid rgba(245,166,35,0.3); padding:2px 6px; border-radius:3px;">Visualized</span>
+            </div>
+          </div>
+          <div class="mermaid-wrap">
+            <div class="mermaid" id="mermaid-chart">graph TD\n A[Start]-->B[Learn]</div>
+          </div>
+        </div>
+
+        <div class="glass-card animate-in delay-4" style="margin-bottom:40px;">
+          <div class="section-label">Actionable Learning Path</div>
+          <div id="learning-path"
+            style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;color:var(--text);line-height:1.8; margin-top:20px;">
+            —</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Mermaid init — Cyberpunk Dark Theme matching our design
+    mermaid.initialize({
+      startOnLoad: false,
+      theme: 'base',
+      themeVariables: {
+        background: 'transparent',
+        primaryColor: 'rgba(245,166,35,0.05)',  /* Amber very low opacity */
+        primaryTextColor: '#E0DBD1',
+        primaryBorderColor: '#F5A623',                /* Amber borders */
+        lineColor: '#2DD4BF',                /* Teal connecting lines */
+        secondaryColor: '#111111',
+        tertiaryColor: '#0D0D0D',
+        edgeLabelBackground: '#111111',
+        nodeBorder: '#F5A623',
+        clusterBkg: 'rgba(10,10,10,0.5)',
+        titleColor: '#E0DBD1',
+        fontFamily: 'IBM Plex Mono, monospace',
+        fontSize: '14px',
+      },
+      flowchart: { useMaxWidth: true, htmlLabels: true, curve: 'basis' }
+    });
+
+    async function loadAnalysis() {
+      // 1. Retrieve result stored by candidate.html
+      const raw = sessionStorage.getItem('smarthire_result');
+      if (!raw) {
+        setMsg('No result data found — please return to the Dashboard and analyse a resume first.');
+        return;
+      }
+
+      const result = JSON.parse(raw);
+      setMsg('Requesting neural pathway generation from Claude…');
+
+      try {
+        const res = await fetch('/api/candidate/suggest', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: result.name,
+            domain: result.domain,
+            skills: result.skills,
+            score: result.score,
+            metrics: result.metrics,
+            recruiter_note: result.recruiter_note
+          })
+        });
+        const data = await res.json();
+        if (!res.ok || data.error) throw new Error(data.error || 'API error');
+
+        renderAnalysis(result, data);
+
+      } catch (err) {
+        setMsg('System Error: ' + err.message);
+        document.getElementById('loading-msg').style.color = 'var(--red)';
+        document.querySelector('.loading-dots').style.display = 'none';
+      }
+    }
+
+    function renderAnalysis(result, aiData) {
+      const pct = Math.round((result.score || 0) * 100);
+      const scoreColor = pct >= 70 ? 'var(--green)' : pct >= 45 ? 'var(--teal)' : 'var(--red)';
+
+      // page title
+      document.getElementById('page-title').textContent =
+        ((result.name || 'YOUR') + "'S ROADMAP").toUpperCase();
+
+      // score recap
+      const recapEl = document.getElementById('recap-score');
+      recapEl.textContent = pct;
+      recapEl.style.color = scoreColor;
+      recapEl.style.textShadow = `0 0 20px ${scoreColor}40`; // Hex opacity hack
+      document.getElementById('recap-strong').textContent = `● ${result.metrics?.total_strong_skills || 0} Strong`;
+      document.getElementById('recap-medium').textContent = `● ${result.metrics?.total_medium_skills || 0} Medium`;
+      document.getElementById('recap-weak').textContent = `● ${result.metrics?.total_weak_skills || 0} Weak`;
+      document.getElementById('recap-domain').textContent = "Target: " + (result.domain || 'Unspecified');
+
+      // recruiter note
+      document.getElementById('recruiter-note').innerHTML =
+        (result.recruiter_note || aiData.recruiter_note || '—').replace(/\*\*(.*?)\*\*/g, '<span style="color:var(--text);font-weight:500;">$1</span>');
+
+      // gaps
+      const gaps = aiData.skill_gaps || [];
+      const gapsEl = document.getElementById('gaps-container');
+      if (gaps.length === 0) {
+        gapsEl.innerHTML = '<p style="font-size:13px;color:var(--muted);">No critical vulnerabilities identified for this target domain.</p>';
+      } else {
+        gapsEl.innerHTML = gaps.map(g => `
+        <div class="gap-card">
+          <p class="gap-title"><span style="color:var(--amber); font-size:16px;">⚠</span> ${g.skill || g}</p>
+          <p class="gap-desc">${g.reason || g.suggestion || ''}</p>
+        </div>
+      `).join('');
+      }
+
+      // learning path
+      const path = aiData.learning_path || aiData.steps || '';
+      document.getElementById('learning-path').innerHTML =
+        typeof path === 'string'
+          ? path.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<span style="color:var(--amber);font-weight:600;">$1</span>')
+          : path.map((s, i) => `<div style="margin-bottom:12px; padding-bottom:12px; border-bottom:1px solid rgba(255,255,255,0.05);"><span style="color:var(--amber); font-family:'Bebas Neue',sans-serif; font-size:18px; margin-right:8px;">${(i + 1).toString().padStart(2, '0')}.</span> ${s}</div>`).join('');
+
+      // mermaid chart
+      const chartDef = (aiData.mermaid_chart || '').trim();
+      const chartEl = document.getElementById('mermaid-chart');
+
+      if (chartDef) {
+        // Sanitize to remove () which break Mermaid syntax
+        const sanitizedChart = chartDef.replace(/[()]/g, "");
+        chartEl.textContent = sanitizedChart;
+      } else {
+        chartEl.textContent = buildFallbackChart(result);
+      }
+
+      // render mermaid
+      setTimeout(async () => {
+        try {
+          const { svg } = await mermaid.render('roadmap-svg', chartEl.textContent);
+          chartEl.innerHTML = svg;
+        } catch (e) {
+          chartEl.innerHTML = `<p style="color:var(--red);font-size:12px; text-align:center;">Blueprint rendering failed: ${e.message}</p>`;
+          console.error('Mermaid error:', e);
+        }
+      }, 200);
+
+      // hide loader, show content
+      document.getElementById('loading-screen').style.display = 'none';
+      document.getElementById('analysis-content').style.display = 'block';
+      document.getElementById('loader').style.display = 'none';
+
+      const statusEl = document.getElementById('topbar-status');
+      statusEl.textContent = 'Analysis Complete';
+      statusEl.style.color = 'var(--teal)';
+      statusEl.style.background = 'var(--teal-lo)';
+    }
+
+    function buildFallbackChart(result) {
+      const domain = (result.domain || 'Target Role').replace(/[^a-zA-Z0-9 ]/g, '');
+      const gaps = [];
+
+      // Extract gaps from skill data
+      Object.values(result.skills || {}).flat().forEach(s => {
+        if (s.confidence !== 'strong') {
+          gaps.push(s.skill.replace(/[^a-zA-Z0-9 ]/g, ''));
+        }
+      });
+
+      const limitedGaps = gaps.slice(0, 3);
+      let chart = `graph TD\n  START["Start"] --> C["Current Skills"]\n`;
+      let lastNode = "C";
+
+      // Link nodes sequentially to make it linear
+      limitedGaps.forEach((gap, i) => {
+        chart += `  ${lastNode} --> G${i}["Learn ${gap}"]\n`;
+        lastNode = `G${i}`;
+      });
+
+      chart += `  ${lastNode} --> GOAL["🎯 ${domain}"]`;
+      return chart;
+    }
+
+    function setMsg(msg) {
+      document.getElementById('loading-msg').textContent = msg;
+    }
+
+    // kick off on load
+    window.addEventListener('DOMContentLoaded', loadAnalysis);
+  </script>
+</body>
+
+</html>
